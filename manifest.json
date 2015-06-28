@@ -1,22 +1,23 @@
 {
-  "name": "Bitcoin is awesome",
+  "name": "Bitcoin is Awesome",
+  "short_name": "Bitcoin is Awesome",
   "description": "Replace the words bitcoin and blockchain with other words",
-  "version": "1.0",
+  "version": "1.0.1",
+  "author": "Elaine Ou",
   "permissions": [
     "activeTab", "webNavigation", "*://*/*"
   ],
-  /*"background": {
-    "scripts": ["background.js", "jspos/lexer.js", "jspos/lexicon.js", "jspos/POSTagger.js"],
-    "persistent": false
-  },*/
-  "browser_action": {
-    "default_title": "Replace bitcoin and blockchain"
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
   },
     "content_scripts":
   [
     {
       "matches": ["*://*/*"],
-      "js": ["jspos/lexer.js", "jspos/lexicon.js", "jspos/POSTagger.js", "background.js"],
+      "js": ["jspos/lexer.js", "jspos/lexicon.js", "jspos/POSTagger.js", "content_script.js"],
       "run_at": "document_end"
     }
   ],

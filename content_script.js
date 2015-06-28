@@ -50,16 +50,17 @@ String.prototype.capitalize = function() {
     return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 };
 
-function replaceWord(w, neww) {
+function replaceWord(w, btcw, blockw) {
     // replace the old word and match case
-    //console.log(w);
-    var x = w.replace(/bitcoins?/g, neww);
-    x = x.replace(/bitcoins?/g, neww)
-    x = x.replace(/blockchain/g, neww);
-    x = x.replace(/Bitcoins?/g, neww.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); }));
-    x = x.replace(/Blockchain/g, neww.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); }));
-    x = x.replace(/BITCOINS?/g, neww.toUpperCase());
-    x = x.replace(/BLOCKCHAIN/g, neww.toUpperCase());
+    console.log(btcw);
+    console.log(blockw);
+    var x = w.replace(/bitcoins?/g, btcw);
+    x = x.replace(/bitcoins?/g, btcw)
+    x = x.replace(/blockchain/g, blockw);
+    x = x.replace(/Bitcoins?/g, btcw.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); }));
+    x = x.replace(/Blockchain/g, blockw.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); }));
+    x = x.replace(/BITCOINS?/g, btcw.toUpperCase());
+    x = x.replace(/BLOCKCHAIN/g, blockw.toUpperCase());
 
     // all caps
     //if (w.toUpperCase() == w) {x = x.toUpperCase(); console.log(w);}
@@ -85,6 +86,7 @@ function replaceText(v)
 
           var words = new Lexer().lex(sents[s]);
           var taggedWords = new POSTagger().tag(words);
+          var btcWord = '', blockWord='';
 
           // js sucks at arrays
           var tags = []; // only need first two chars of tag
@@ -102,17 +104,17 @@ function replaceText(v)
                 // replace depending on PoS
 
                 // subject of sentence
-                if (verbPos < 0 | verbPos > i | tag=="JJ") newWord = "money laundering";
-                else newWord = "fraudulent currency";
+                if (verbPos < 0 | verbPos > i | tag=="JJ") btcWord = "money laundering";
+                else btcWord = "fraudulent currency";
 
                 // replace the old word and match case
                 //repSent += replaceWord(word, newWord) + " ";
             } else if (word.toLowerCase().includes("blockchain")) {
-                if (tag=="JJ") newWord = "terrorist"
-                else newWord = "money laundering network";
+                if (tag=="JJ") blockWord = "terrorist"
+                else blockWord = "money laundering network";
             }
           }
-          repSent = replaceWord(sents[s], newWord);
+          repSent = replaceWord(sents[s], btcWord, blockWord);
           result += repSent + " ";
         } else { result += sents[s] + " "; }
       }
